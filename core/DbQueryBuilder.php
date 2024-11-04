@@ -34,7 +34,7 @@ class DbQueryBuilder
     private $debug = false;
 
     public function __construct(){
-    //    $this->pdo = DbQueryBuilder::getInstance();
+        //    $this->pdo = DbQueryBuilder::getInstance();
         $this->debug = config('database.debug');
     }
 
@@ -941,7 +941,7 @@ class DbQueryBuilder
     /**
      * CREATE TABLE `survey_result_1` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT
-     ,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
      */
     public function createTable(string $tableName, $columns=[], $comment=''){
         $sql = "CREATE TABLE `". config('database.prefix') ."$tableName` ";
@@ -1269,17 +1269,75 @@ class DbQueryBuilder
         if(empty($fieldList)){
             return false;
         }
-        $sql = "INSERT INTRO  {$tableName} (". implode(',', $fieldList) .") VALUES (". implode(',', $valueList) .")";
-        //使用绑定参数的方式添加数据，多条转成单条循环添加
-        $stmt = $this->pdo->prepare($sql);
-        foreach ($dataList as $data) {
-            $sqlDataList = [];
-            foreach($data as $dk => $dv){
-                $sqlDataList[':'.$dk] = $dv;
+        $sql = "INSERT INTO  {$tableName} (". implode(',', $fieldList) .") VALUES (". implode(',', $valueList) .")";
+        try {
+            if (empty($this->pdo)) {
+                $this->connect();
             }
-            $stmt->execute($sqlDataList);
+            $this->pdo->beginTransaction();
+            //使用绑定参数的方式添加数据，多条转成单条循环添加
+            $stmt = $this->pdo->prepare($sql);
+            foreach ($dataList as $data) {
+                foreach ($data as $dk => $dv) {
+                    $stmt->bindValue(':' . $dk, $dv);
+                }
+                $stmt->execute();
+            }
+            $this->pdo->commit();
+            return true;
+        }catch (\PDOException $e){
+            $this->pdo->rollBack();
+            return false;
         }
-        return true;
+    }
+
+    /**
+     * 批量更新, 只支持按照ID更新
+     *
+     * @author lichunguang 153102250@qq.com
+     * @since 2024/10/11 上午8:40
+     */
+    public function batchUpdate($dataList)
+    {
+        if(empty($dataList)){
+            return false;
+        }
+        $fieldList = $valueList = [];
+        $tableName = $this->getTableSql();
+        $fieldType = $this->tableFieldType[$tableName];
+
+        $dataField = $dataList[0];
+        foreach ($dataField as $k=>$v){
+            //如果字段不存在，不参与更新,ID字段不参与更新
+            if(! isset($fieldType[$k]) || $k=='id'){
+                continue;
+            }
+            $fieldList[] = "`{$k}`=:{$k}";
+        }
+        if(empty($fieldList)){
+            return false;
+        }
+        $sql = "UPDATE  {$tableName} SET ". implode(',', $fieldList) ." WHERE id=:id";
+        log_error("sql", $sql);
+        try {
+            if (empty($this->pdo)) {
+                $this->connect();
+            }
+            $this->pdo->beginTransaction();
+            //使用绑定参数的方式添加数据，多条转成单条循环添加
+            $stmt = $this->pdo->prepare($sql);
+            foreach ($dataList as $data) {
+                foreach ($data as $dk => $dv) {
+                    $stmt->bindValue(':' . $dk, $dv);
+                }
+                $stmt->execute();
+            }
+            $this->pdo->commit();
+            return true;
+        }catch (\PDOException $e){
+            $this->pdo->rollBack();
+            return false;
+        }
     }
 
     /**
