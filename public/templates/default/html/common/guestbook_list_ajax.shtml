@@ -1,0 +1,36 @@
+<!-- 留言记录 -->
+<loop table_name="guestbook" is_page="1" page_size="6" page=":page" order_by="id|desc">
+    <div class="media border-bottom pb-3 pt-3">
+        <img class="mr-3" src="{PUBLIC_URL}/static/default_user.jpg" height="25">
+
+        <div class="media-body">
+            <h5 class="mt-0">{$linkman}：</h5>
+            <p>{$content}</p>
+            <p>
+                <span class="badge badge-light text-secondary font-weight-normal">Windows 10</span>
+                <span class="badge badge-light text-secondary font-weight-normal">Firefox</span>
+                <span class="badge badge-light text-secondary font-weight-normal">{$created_at}</span>
+            </p>
+
+            {if !empty($item['reply'])}
+            <div class="media mt-3 border-top-dashed pt-3">
+                <img class="mr-3" src="{TEMPLATE_SKIN}/images/user.png" height="25">
+                <div class="media-body">
+                    <h5 class="mt-0">管理员回复：</h5>
+                    <p>{$reply}</p>
+                    <p><span class="badge badge-light text-secondary font-weight-normal">{$updated_at}</span></p>
+                </div>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+</loop>
+
+<!-- 分页 -->
+
+<nav aria-label="page navigation" class="my-4">
+    <div class="pagination justify-content-center">
+        <pagebar>{first}{prev}{page_list}{next}{last}</pagebar>
+    </div>
+</nav>

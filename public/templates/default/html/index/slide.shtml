@@ -1,0 +1,23 @@
+<!-- 幻灯片 -->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <loop table_name="banner" type="1" state="1">
+        <div class="swiper-slide">
+            <a href="{$url}">
+                <img src="{$cover}" class="d-block w-100" >
+            </a>
+            <div class="container">
+                <div class="position-absolute text-light" style="top:30%;">
+                    <h1 class="fs-20 fs-sm-32 wow slideInUp" {if $item['title_color'] != ""}style="color:{$title_color};"{/if}>{$title}</h1>
+                    <h4 class="fs-14 fs-sm-20 wow slideInUp" {if $item['intro_color'] != ""}style="color:{$intro_color};"{/if}>{$intro}</h4>
+                </div>
+            </div>
+        </div>
+        </loop>
+
+
+    </div>
+    <div class="swiper-button-prev d-none d-md-block"></div><!--左箭头-->
+    <div class="swiper-button-next d-none d-md-block"></div><!--右箭头-->
+    <div class="swiper-pagination"></div>
+</div>

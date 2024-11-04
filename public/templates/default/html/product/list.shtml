@@ -1,0 +1,73 @@
+<!--#include file="../common/header.shtml"-->
+
+<!--#include file="../common/banner.shtml"-->
+<style type="text/css">
+    .card-text{height: 32px; line-height: 32px;}
+</style>
+<div class="container pages">
+
+    <!-- 当前位置 -->
+    <div class="text-right position mb-3 d-none d-md-block">当前位置：<a href="/">首页</a><position>><a href="{$list_url}">{$title}</a></position></div>
+
+    <!-- 分类筛选 -->
+    <div  class="my-3">
+        <div class="row">
+            <div class="col-12 col-sm-2 col-md-1">类型：</div>
+            <div class="col-12 col-sm-10 col-md-11">
+                <a href="{{list_url('product')}}" class="mb-3 btn {{all_button_css('type', '', 'btn-info', 'btn-light')}}">全部</a>
+                <loop loop_type="extend_field" field="type">
+                    <a href= "{$value,extend_search_url,type}" class="mb-3 btn {if input('type') == $item['value']}btn-info{else}btn-light{/if}">{$value}</a>
+                </loop>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm-2 col-md-1">颜色：</div>
+            <div class="col-12 col-sm-10 col-md-11">
+                <a href="{{list_url('product')}}" class="mb-3 btn  {{all_button_css('type', '', 'btn-info', 'btn-light')}}">全部</a>
+                <loop loop_type="extend_field" field="color">
+                    <a href= "{$value,extend_search_url,color}" class="mb-3 btn {if input('color') == $item['value']}btn-info{else}btn-light{/if}">{$value}</a>
+                </loop>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图文列表 -->
+    <div class="row">
+        <loop table_name="product" class_id=":class_id" search_type=":search_type" search_text=":search_text" type=":type" color=":color" is_page="1" page_size="12" page=":page" order_by="id|desc">
+        <empty><div class="text-center my-5 text-secondary">未查询到任何数据！</div></empty>
+        <div class="col-12 col-sm-6 col-lg-3 wow zoomIn" data-wow-delay="200ms" data-wow-duration="1s">
+            <div class="card">
+                <div class="card-img-150"><a href="{$content_url}"><img class="card-img-top" src="{$cover}" alt="{$title}"></a></div>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{$content_url}">{$title,replace_keywords}</a></h5>
+                    <p class="card-text">
+                        {$intro,replace_keywords}
+                    </p>
+                </div>
+            </div>
+        </div>
+        </loop>
+    </div>
+
+    <!-- 分页 -->
+
+    <nav aria-label="page navigation" class="my-4">
+        <div class="pagination justify-content-center">
+            <pagebar>{first}{prev}{page_list}{next}{last}</pagebar>
+        </div>
+    </nav>
+
+
+    <!-- 搜索-->
+    <form class="form-inline mb-5 justify-content-center" action="{{list_url('product')}}"  method="post">
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="hidden" name="search_type" value="title" />
+            <input type="text" name="search_text" value="{request.search_text}" class="form-control" placeholder="请输入关键字">
+        </div>
+        <button type="submit" class="btn btn-info mb-2">搜索</button>
+    </form>
+
+</div>
+
+<!--#include file="../common/footer.shtml"-->

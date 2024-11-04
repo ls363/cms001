@@ -1,0 +1,55 @@
+/* CSS Document */
+
+body,td,th {
+    font-size: 12px;
+    font-family: 宋体;
+}
+.boxcenter{
+    margin:0px auto;
+}
+
+/*------------------------------------------------*/
+
+.butbox{
+    width:760px;
+    text-align:center;
+    margin-top:20px;
+}
+
+.nextbut{
+    width:140px;
+    height:38px;
+    border:none;
+    background:url(../images/but_next.gif) no-repeat;
+    cursor:pointer;
+}
+.setupbut{
+    width:140px;
+    height:38px;
+    border:none;
+    background:url(../images/but_setup.gif) no-repeat;
+    cursor:pointer;
+}
+.backbut{
+    width:140px;
+    height:38px;
+    border:none;
+    background:url(../images/but_back.gif) no-repeat;
+    cursor:pointer;
+}
+.wrapper{width: 80%; margin: 20px auto;}
+.wrapper h1{ font-size: 22px; color: #000; font-weight: bold; text-align: center; margin-bottom: 20px;}
+.wrapper table{width:100%; border-collapse: collapse; border:solid 1px #ddd;}
+.wrapper table td{border:solid 1px #ddd; padding: 10px 20px; font-size: 14px;}
+.wrapper table td input{border: solid 1px #ddd; padding-left: 10px; height: 30px; line-height: 30px;}
+.wrapper table td textarea{border: solid 1px #ddd; padding-left: 10px; height: 100px; line-height: 30px;}
+.label{background: #F0F6FB;}
+.logo2{ background: #00b5f9; font-size: 26px; color: #fff; font-weight: bold; height: 50px; line-height: 50px;}
+.logo{ text-align: center; margin-bottom:20px;}
+.wrapper .content{border:solid 1px #00b5f9; padding: 20px; font-size: 14px; line-height: 150%; margin-bottom: 20px;}
+.wrapper .footer{ padding-top: 30px; text-align: center; font-size: 14px; line-height: 150%;}
+td.box_label{ text-align: center; font-size: 16px; font-weight: bold; background: #f0f0f0;}
+.eye{ width: 16px;}
+.tip{color:#999;}
+.required{color: red;}
+.install_tip{padding:20px; color: red; font-size: 14px; line-height: 32px; font-weight: bold;}

@@ -1,0 +1,149 @@
+<div class="container">
+	<div class="shadow-sm p-3 my-5 bg-white rounded">
+		<h4>发表评论：</h4>
+		<form class="my-4" onsubmit="return submitcomment(this);" data-action="{{url('home/comment/save', ['content_id' => $args['id'], 'model_id' => $args['model_id']])}}" >
+			<div class="form-group">
+				<textarea name="comment" id="comment" class="form-control" placeholder="请输入评论内容"></textarea>
+			</div>
+
+
+			<div class="form-group">
+				<div class="row">
+					<div class="col-6 col-md-3">
+						<input type="text" name="nickname" required id="nickname" class="form-control" placeholder="请输入昵称">
+					</div>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="row">
+					<div class="col-6 col-md-2">
+						<input type="text"  name="checkcode" required id="checkcode" class="form-control" placeholder="请输入验证码">
+					</div>
+					<div class="col-6  col-md-3">
+						<img title="点击刷新" class="codeimg" style="height:33px;cursor:pointer;" src="{#site_domain#}{{ url('home/welcome/randNum') }}" onclick="refreshRandom(this)" />
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-info mb-2">提交评论</button>
+			</div>
+		</form>
+
+
+		<h4>评论记录：</h4>
+
+
+		<!-- 分页 -->
+		<loop table_name="comment" model_id=":model_id" content_id=":id" record_num="10" order_by="id|desc">
+			<empty><div class="text-center my-5 text-secondary">未查询到任何数据！</div></empty>
+			<div class="media border-bottom pb-3 pt-3">
+				<img class="mr-3" src="{TEMPLATE_SKIN}/images/user.png" height="25">
+				<div class="media-body">
+					<h6 class="mt-0">
+						<strong>{$nickname}</strong>
+						<small style="color:#999">{$created_at}</small>
+					</h6>
+					<p>{$comment_content}
+						<span style="display: none;" class="badge badge-light text-secondary font-weight-normal replybtn"  data-action="/?comment/add/&contentid=7&pid=36&puid=281">回复</span>
+					</p>
+				</div>
+			</div>
+		</loop>
+
+	</div>
+</div>
+
+<!-- 评论回复弹框 -->
+<div class="modal" tabindex="-1" role="dialog" id="reply">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">回复评论：</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form  onsubmit="return submitcomment(this);" data-action=""  id="replyform">
+          {{ csrf_token() }}
+	      <div class="modal-body">
+		         <div class="form-group">
+		             <textarea name="comment" id="comment" class="form-control" placeholder="请输入评论内容"></textarea>
+		         </div>
+
+		         <div class="form-group">
+		             <div class="row">
+		                 <div class="col-6">
+		                     <input type="text" name="checkcode" required id="checkcode" class="form-control" placeholder="请输入验证码">
+		                 </div>
+		                 <div class="col-6">
+                             <img title="点击刷新" class="codeimg" style="height:33px;cursor:pointer;" src="" onclick="refreshRandom(this)" />
+		                 </div>
+		             </div>
+		         </div>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+	        <button type="submit" class="btn btn-info">提交评论</button>
+	      </div>
+       </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+//评论回复弹框
+$('.replybtn').on("click",function(){
+    var url=$(this).data("action");
+    $("#reply").modal("show");
+    $("#replyform").data("action",url);
+});
+
+//提交评论
+function submitcomment(obj){
+    var url= $(obj).data("action");
+	var nickname=$(obj).find("#nickname").val();
+    var comment=$(obj).find("#comment").val();
+    var checkcode=$(obj).find("#checkcode").val();
+
+    $.ajax({
+    type: 'POST',
+    url: url,
+    dataType: 'json',
+    data: {
+    	nickname:nickname,
+        comment_content: comment,
+        verifyCode: checkcode
+    },
+    success: function (response, status) {
+        console.log(response)
+        if(response.code == 200){
+            alert(response.message);
+            $(obj)[0].reset();
+            $(".modal").modal("hide");
+            window.location.reload()
+      }else{
+            /*
+            if(response.tourl!=""){
+                if(confirm(response.data+'是否立即跳转登录？')){
+                    location.href=response.tourl;
+                }
+            }*/
+            $('.codeimg').click();//更新验证码
+        }
+    },
+    error:function(xhr,status,error){
+        alert('返回数据异常！');
+    }
+  });
+  return false;
+}
+</script>

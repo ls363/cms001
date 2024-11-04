@@ -1,0 +1,17 @@
+		<!-- 分页 -->
+		<loop table_name="comment" model_id=":model_id" content_id=":id" record_num="10" order_by="id|desc">
+			<empty><div class="text-center my-5 text-secondary">暂时没有评论！</div></empty>
+			<div class="media border-bottom pb-3 pt-3">
+				<img class="mr-3" src="{TEMPLATE_SKIN}/images/user.png" height="25">
+				<div class="media-body">
+					<h6 class="mt-0">
+						<strong>{$nickname}</strong>
+						<small style="color:#999">{$created_at}</small>
+					</h6>
+					<p>{$comment_content}
+						<span style="display: none;" class="badge badge-light text-secondary font-weight-normal replybtn"  data-action="/?comment/add/&contentid=7&pid=36&puid=281">回复</span>
+					</p>
+				</div>
+			</div>
+		</loop>
+

@@ -1,0 +1,45 @@
+<!--#include file="../common/header.shtml"-->
+
+<!-- 头部大屏 -->
+<!--#include file="../common/banner.shtml"-->
+
+
+<div class="container pages">
+
+    <!-- 当前位置 -->
+    <div class="text-left position mb-3 d-none d-md-block">当前位置：<a href="{#site_domain#}">{#site_home#}</a> > 标签{request.tag}的搜索结果</div>
+
+    <!-- 列表内容 -->
+    <ul>
+
+        <loop table_name="{##table##}" tag=":tag" is_page="1" page_size="10" page=":page" order_by="id|desc">
+        <li class="lh-3 border-bottom-dashed">
+            <i class="fa fa-gg"></i>
+            <a href="{$content_url}">
+                <span>{index}</span><span class="d-none d-md-inline">{$title,strCutLen,16}</span><!-- PC端 -->
+                <span class="d-inline d-md-none">{$title,strCutLen,11}</span><!-- 移动端 -->
+
+                {if $item['is_top'] == 1}
+                <span class="badge badge-danger">置顶</span>
+                {/if}
+
+
+                <span class="float-right">{$created_at}</span>
+            </a>
+        </li>
+        </loop>
+
+    </ul>
+
+    <!-- 分页 -->
+
+    <nav aria-label="page navigation" class="my-4">
+        <div class="pagination justify-content-center">
+            <pagebar>{first}{prev}{page_list}{next}{last}</pagebar>
+        </div>
+    </nav>
+
+
+</div>
+
+<!--#include file="../common/footer.shtml"-->

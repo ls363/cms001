@@ -1,0 +1,85 @@
+<!--#include file="../common/header.shtml"-->
+
+<!-- 头部大屏 -->
+<!--#include file="../common/banner.shtml"-->
+
+<div class="container pages">
+    <loop table_name="diy_form" id="1" cache="1">
+    <!-- 当前位置 -->
+    <div class="text-right position mb-3 d-none d-md-block">当前位置：<a href="/">首页</a>>{$front_title}</div>
+
+
+    <h5 class="border-bottom border-info pb-2"><i class="fa fa-sliders" aria-hidden="true"></i> {$front_title}</h5>
+        <p>{$front_intro}</p>
+    </loop>
+    <!-- 留言表单 -->
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-12 col-lg-6">
+            <form class="my-4" onsubmit="return submsg(this);">
+                <loop table_name="diy_form_field" form_id="1" cache="1">
+                <div class="form-group">
+                    <label for="{$field_input}">{$field_name}</label>
+                    <div>
+                        <input type="text" name="{$field_input}" {if $item['require'] == 1 }required{/if} id="{$field_input}" class="form-control" placeholder="{$field_tip}">
+                    </div>
+                </div>
+                </loop>
+
+                <div class="form-group">
+                    <label for="checkcode">验证码</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" name="checkcode" required id="checkcode" class="form-control" placeholder="请输入验证码">
+                        </div>
+                        <div class="col-6">
+                            <img title="点击刷新" class="codeimg" style="height:33px;cursor:pointer;" src="{{ url('home/welcome/randNum') }}" onclick="refreshRandom(this)" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info mb-2">提交留言</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+
+</div>
+
+
+<script>
+
+    //ajax提交留言
+    function submsg(obj){
+        var url='{{url('home/diy_form/save')}}';
+        var data = {"form_id":1, "verify_code":$(obj).find("#checkcode").val()};
+        <loop table_name="diy_form_field" form_id="1" cache="1">
+            data.{$field_input}=$(obj).find("#{$field_input}").val();
+        </loop>
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            data: data,
+            success: function (response, status) {
+                if(response.code == 200){
+                    alert(response.message);
+                    $(obj)[0].reset();
+                }else{
+                    alert(response.message);
+                    $('.codeimg').click();//更新验证码
+                }
+            },
+            error:function(xhr,status,error){
+                alert('返回数据异常！');
+            }
+        });
+        return false;
+    }
+</script>
+
+
+<!--#include file="../common/footer.shtml"-->

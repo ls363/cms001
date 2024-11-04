@@ -1,0 +1,114 @@
+
+
+<!--#include file="../common/header.shtml"-->
+
+<!-- 幻灯片 -->
+<!--#include file="slide.shtml"-->
+
+<!--产品推荐-->
+<div class="bg-white py-5">
+    <div class="container">
+
+
+        <div class="text-center fs-26 fs-sm-28 text-success wow fadeInDown">产品中心</div>
+        <div class="text-center fs-14 fs-sm-16 mb-4 text-secondary wow fadeInUp" data-wow-delay="1s">- 服务创造价值、存在造就未来 -</div>
+
+
+        <div class="row">
+            <loop table_name="product" record_num="4">
+            <div class="col-12 col-sm-6 col-lg-3 wow zoomIn" data-wow-delay="100ms" data-wow-duration="1s">
+                <div class="card">
+                    <div class="card-img-150"><a href="{$content_url}"><img class="card-img-top" src="{$cover}" alt="{$title}"></a></div>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{$content_url}">{$title}</a></h5>
+                        <p class="card-text">
+                            {$intro}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </loop>
+
+
+
+        </div>
+
+        <div class="text-center mt-4 wow fadeInDown" data-wow-delay="1s"><h4><a href="{{list_url('product')}}" class="text-secondary fs-14 fs-sm-16">查看更多</a></h4></div>
+
+    </div>
+</div>
+
+<!-- 关于我们 -->
+<div class="bg-light py-5">
+    <div class="container">
+
+        <div class="text-center fs-26 fs-sm-28 text-info wow fadeInDown">公司简介</div>
+        <div class="text-center fs-14 fs-sm-16 mb-4 text-secondary wow fadeInUp" data-wow-delay="1s">- 网站建设「一站式」服务商 -</div>
+
+
+
+        <div class="row text-secondary mb-5 px-3 lh-2 wow fadeInDown" data-wow-delay="500ms" style="text-indent:30px;">
+            <loop table_name="article" class_id="1" record_num="1">
+                {$content}
+            </loop>
+        </div>
+        <div class="text-center wow fadeInDown" data-wow-delay="1s"><h4><a href="{{list_url('company')}}" class="text-secondary fs-14 fs-sm-16">查看更多</a></h4></div>
+
+    </div>
+</div>
+
+<!-- 新闻动态 -->
+<div class="bg-white py-5">
+    <div class="container">
+
+        <div class="text-center fs-26 fs-sm-28 text-warning wow fadeInDown">新闻中心</div>
+        <div class="text-center fs-14 fs-sm-16 mb-5 text-secondary wow fadeInUp" data-wow-delay="1s">- 了解最新公司动态及行业资讯 -</div>
+
+
+        <div class="row">
+            <loop table_name="article" record_num="4" class_id="3">
+            <div class="col-12 col-lg-6 mb-3 wow fadeInUp" data-wow-delay="500ms">
+                <div class="media mb-3">
+                    <div class="media-body">
+                        <h5><a href="{$content_url}" title="{$title}">{$title}</a></h5>
+                        <p><a href="{$content_url}" class="text-secondary lh-2"> {$intro} {$created_at}</a></p>
+                    </div>
+                </div>
+            </div>
+            </loop>
+        </div>
+
+        <div class="text-center wow fadeInDown" data-wow-delay="1s"><h4><a href="{{list_url('news')}}" class="text-secondary fs-14 fs-sm-16">查看更多</a></h4></div>
+
+    </div>
+</div>
+
+
+<script src="{TEMPLATE_SKIN}/swiper-4.3.5/js/swiper.min.js"></script>
+<script>
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+        speed: 1500,
+        autoplay : {
+            delay:3500,
+            disableOnInteraction: false
+        },
+
+
+        // 如果需要分页器
+        pagination: {
+            el: '.swiper-pagination',
+            clickable :true,
+        },
+
+        // 如果需要前进后退按钮
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+    })
+</script>
+
+<!--#include file="../common/footer.shtml"-->

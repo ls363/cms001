@@ -1,0 +1,148 @@
+<!--#include file="../common/header.shtml"-->
+
+<!-- 头部大屏 -->
+<!--#include file="../common/banner.shtml"-->
+
+<div class="container pages">
+    <!-- 当前位置 -->
+    <div class="text-right position mb-3 d-none d-md-block">当前位置：<a href="/">首页</a>><a href="/?gbook/">在线留言</a></div>
+
+
+    <h5 class="border-bottom border-info pb-2"><i class="fa fa-sliders" aria-hidden="true"></i> 留言记录</h5>
+
+    <!-- 留言记录 -->
+    <loop table_name="guestbook" is_page="1" page_size="6" page=":page" order_by="id|desc">
+    <div class="media border-bottom pb-3 pt-3">
+        <img class="mr-3" src="{PUBLIC_URL}/static/default_user.jpg" height="25">
+
+        <div class="media-body">
+            <h5 class="mt-0">{$linkman}：</h5>
+            <p>{$content}</p>
+            <p>
+                <span class="badge badge-light text-secondary font-weight-normal">Windows 10</span>
+                <span class="badge badge-light text-secondary font-weight-normal">Firefox</span>
+                <span class="badge badge-light text-secondary font-weight-normal">{$created_at}</span>
+            </p>
+
+            {if !empty($item['reply'])}
+            <div class="media mt-3 border-top-dashed pt-3">
+                <img class="mr-3" src="{TEMPLATE_SKIN}/images/user.png" height="25">
+                <div class="media-body">
+                    <h5 class="mt-0">管理员回复：</h5>
+                    <p>{$reply}</p>
+                    <p><span class="badge badge-light text-secondary font-weight-normal">{$updated_at}</span></p>
+                </div>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+    </loop>
+
+    <!-- 分页 -->
+
+    <nav aria-label="page navigation" class="my-4">
+        <div class="pagination justify-content-center">
+            <pagebar>{first}{prev}{page_list}{next}{last}</pagebar>
+        </div>
+    </nav>
+
+    <!-- 留言表单 -->
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-12 col-lg-6">
+            <form class="my-4" onsubmit="return submsg(this);">
+                <div class="form-group">
+                    <label for="contacts">联系人</label>
+                    <div>
+                        <input type="text" name="contacts" required id="contacts" class="form-control" placeholder="请输入联系人">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">手　机</label>
+                    <div>
+                        <input type="text" name="mobile" required id="mobile" class="form-control" placeholder="请输入联系人手机">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="content" >内　容</label>
+                    <div>
+                        <textarea name="content" id="content" class="form-control" placeholder="请输入留言内容"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="checkcode">验证码</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" name="checkcode" required id="checkcode" class="form-control" placeholder="请输入验证码">
+                        </div>
+                        <div class="col-6">
+                            <img title="点击刷新" class="codeimg" style="height:33px;cursor:pointer;" src="{{ url('home/welcome/randNum') }}" onclick="refreshRandom(this)" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info mb-2">提交留言</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+
+</div>
+
+
+<script>
+    /*
+    $(document).ready(function(){
+        let id={request.id};
+        let model_id={request.model_id};
+        var url = "{{url('home/guestbook/getList')}}";
+        $.get(url, {"id":id,"model_id":model_id}, function(data){
+            $('#guestbook_list').html(data);
+        });
+    });*/
+
+    //ajax提交留言
+    function submsg(obj){
+        var url='{{url('home/message/save')}}';
+        var contacts=$(obj).find("#contacts").val();
+        var mobile=$(obj).find("#mobile").val();
+        var content=$(obj).find("#content").val();
+        var checkcode=$(obj).find("#checkcode").val();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            data: {
+                linkman: contacts,
+                mobile: mobile,
+                content: content,
+                verifyCode: checkcode
+            },
+            success: function (response, status) {
+                if(response.code == 200){
+                    alert("谢谢您的反馈，我们会尽快联系您！");
+                    $(obj)[0].reset();
+                }else{
+                    alert("参数错误，请勿非法提交！");
+                    $('.codeimg').click();//更新验证码
+                }
+            },
+            error:function(xhr,status,error){
+                alert('返回数据异常！');
+            }
+        });
+        return false;
+    }
+</script>
+
+
+<!--#include file="../common/footer.shtml"-->

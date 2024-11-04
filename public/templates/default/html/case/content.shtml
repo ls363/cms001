@@ -1,0 +1,59 @@
+
+
+
+<!--#include file="../common/header.shtml"-->
+
+
+<!-- 头部大屏 -->
+<div class="jumbotron jumbotron-fluid mb-2" style="background:#e9ecef url({TEMPLATE_SKIN}/images/banner/inner_bg.jpg);background-size:cover;no-repeat">
+    <div class="container text-light">
+        <h1 class="fs-18 fs-sm-26 wow fadeInDown">行业动态</h1>
+        <p class="fs-14  fs-sm-18 wow fadeInDown">了解最新公司动态及行业资讯</p>
+    </div>
+</div>
+
+<div class="container pages">
+
+    <!-- 当前位置 -->
+    <div class="text-right position mb-3 d-none d-md-block">当前位置：<a href="/">首页</a><position>><a href="{$list_url}">{$title}</a></position></div>
+
+    <!-- 分类导航 -->
+    <div class="sonsort mt-4 mb-2">
+
+
+
+        <a href="/?project/" class="btn btn-light mb-2">全部 <span class="badge btn-info">5</a>
+
+        <loop table_name="classify" parent_id=":class_id">
+        <a href="{$url}" class="btn btn-light mb-2">{$title} <span class="badge btn-info">2</span></a>
+        </loop>
+
+    </div>
+
+    <loop table_name="project" global="1" id=":id" record_num="1">
+    <h2 class="text-center fs-sm-28 fs-20 mt-3">{$title}</h2>
+    <div class="text-center border-bottom text-secondary pb-2 mb-3">
+        时间：{$created_at}&nbsp;&nbsp;&nbsp;访问量：{$hits}
+    </div>
+    <div class="content mb-3">
+        {$content}
+    </div>
+
+    </loop>
+    <div class="text-secondary lh-2">
+        <loop table_name="project" loop_type="previous" id=":id" record_num="1" order_by="id|desc">
+        <p>上一篇: <a href="{$content_url}">{$title}</a></p>
+        </loop>
+        <loop table_name="project" loop_type="next" id=":id" record_num="1" order_by="id|asc">
+        <p>下一篇: <a href="{$content_url}">{$title}</a></p>
+        </loop>
+    </div>
+</div>
+
+
+<!--#include file="../common/comment.shtml"-->
+
+<!--#include file="../common/footer.shtml"-->
+
+
+

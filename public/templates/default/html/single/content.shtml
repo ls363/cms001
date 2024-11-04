@@ -1,0 +1,17 @@
+<!--#include file="../common/header.shtml"-->
+
+<!-- 头部大屏 -->
+<!--#include file="../common/banner.shtml"-->
+
+<div class="container pages">
+    <!-- 当前位置 -->
+    <div class="text-right position mb-3 d-none d-md-block">当前位置：<a href="/">首页</a><position>><a href="{$list_url}">{$title}</a></position></div>
+    <loop table_name="article" class_id=":class_id" record_num="1" global="1">
+    <h2 class="text-center my-4 fs-sm-28 fs-24">{$title}</h2>
+    <div class="content">
+        {$content}
+    </div>
+    </loop>
+</div>
+
+<!--#include file="../common/footer.shtml"-->

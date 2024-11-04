@@ -1,0 +1,9 @@
+<!-- 头部大屏 -->
+<loop table_name="classify" global="1" id=":class_id" record_num="1">
+<div class="jumbotron jumbotron-fluid mb-2" style="background:#e9ecef url({$banner,get_default_inner_nanner$});background-size:cover;no-repeat">
+    <div class="container text-light">
+        <h1 class="fs-18 fs-sm-26 wow fadeInDown">{$title$}</h1>
+        <p class="fs-14  fs-sm-18 wow fadeInDown">{$intro$}</p>
+    </div>
+</div>
+</loop>

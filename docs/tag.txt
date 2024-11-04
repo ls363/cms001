@@ -1,0 +1,119 @@
+CMS001的标签系统
+{request.字段名} 这种标签主要是用于请求参数，这些参数是由路由产生，每个链接都会解析出model_id【内容模型ID】。
+常用类型
+{request.id} 内容的ID
+{request.class_id} 内容分类的ID
+{request.model_id} 内容模型的ID
+
+{#字段名#} 这种标签，用于获取系统配置，即system_config表的字段。
+
+{global.title} 可以通过global参数，将某一条记录，设为全局调用 可以是一个分类，也可以是具体的内容
+
+请求参数标签
+{request.id} {request.class_id} {request.model_id}
+
+公司信息
+{company.字段名}
+
+<position></position> 位置标签，显示当前位置
+
+<pagebar></pagebar> 分页标签
+
+{global}标签
+如果 id 与 class_id 都为空，global 为系统配置
+如果 id > 0 则是内容标签，global为内容信息
+如果 class_id > 0 则是列表页 global为分类信息
+
+{$字段名} [$字段名] 字段标签
+{$字段名} 在 <loop></loop>之间
+[$字段名] 在 <nextloop></nextloop>之间
+
+<loop> 标签中，可以包含 <nextloop> 标签
+
+
+<loop table_name="product" id=":id" record_num="1" global="1">
+global = 1 将此内容放置在 global 标签中
+
+<nextloop loop_type="data" data="slideList">
+此时使用外层获取的 slideList 即轮播图数据
+
+list_url 列表页URL
+content_url  内容页URL
+coverPic 封面图片
+coverPicBig 封面图片大图
+
+
+<loop name="classify" parent_id="0" order_by="sort|asc" cache="1">
+cache=1 表示缓存数据
+
+
+{{url('home/install/config')}}  {{}}这种为函数标签
+
+
+
+<loop>循环体</loop>
+
+循环体，支持 if 标签，可以进行一些判断
+用法如下
+{if $item['title'] == 'aaa'}
+{elseif $item['title'] == 'aaa'}
+{else}
+{/if} {endif} {/endif} 结束符允许这三种
+
+以上会被转换成 PHP的if语句
+
+列表中的序号
+{i} 从 1 开始
+{index} 从0开始
+
+{if}{/if}语名中，只能使用 $index == 5 来判断
+
+{if $index == 5 }
+            测试测试
+            {/if}
+            {if $index % 3 == 0 }
+            三行分割线
+            {/if}
+            {if $item['title'] == 'CMS001安装程序完成'}
+            使用变量测试
+            {/if}
+
+
+如果页面中有多个 global=1 则后面的loop会覆盖前面的
+
+
+循环体 loopbody 中间 {{func($item['title'], $index, '<a href="url">title</a>')}}
+//替换全局函数调用
+        $pattern = "/\{\{(.*?)\}\}/i";
+        $templateContent = preg_replace($pattern, "<?php echo $1; ?>", $templateContent);
+
+        //列表中调用
+        {{parseTagList($item['tags'])}}
+        //详情中调用
+        {{parseTagList($result['tags'])}}
+
+        //另外一种方式
+        {$tags,parseTagList}
+
+
+        <h3>{{tag_list_html($result['tags'], 'article')}}</h3>
+            <h3>{$tags,tag_list_html,article}</h3>
+
+
+<h3><?php echo tag_list_html($result['tags'], 'article'); ?></h3>
+    <h3><?php echo tag_list_html($result['tags'], 'article'); ?></h3>
+
+
+
+{TEMPLATE_SKIN} //模板皮肤目录，如default的完整路径
+{PUBLIC_URL} public文件夹的目录，如/public
+
+
+
+//获取内容页的地址
+{{content_url($v['id'], $v['class_id'])}}
+
+
+{$content_url} 内容页地址
+
+{$list_url} 列表页的地址

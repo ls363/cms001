@@ -1,0 +1,37 @@
+<!--#include file="../common/header.shtml"-->
+
+<!--#include file="../common/banner.shtml"-->
+
+<div class="container pages">
+
+    <!-- 当前位置 -->
+    <div class="text-right position mb-3 d-none d-md-block">当前位置：<a href="/">首页</a><position>><a href="{$list_url}">{$title}</a></position></div>
+    <!-- 图文列表 -->
+    <div class="row">
+        <loop table_name="{##table##}" class_id=":class_id" keywords=":keywords" type=":type" color=":color" is_page="1" page_size="2" page=":page" order_by="id|desc">
+        <empty><div class="text-center my-5 text-secondary">未查询到任何数据！</div></empty>
+        <div class="col-12 col-sm-6 col-lg-3 wow zoomIn" data-wow-delay="200ms" data-wow-duration="1s">
+            <div class="card">
+                <div class="card-img-150"><a href="{$content_url}"><img class="card-img-top" src="{$cover}" alt="{$title}"></a></div>
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{$content_url}">{$title,replace_keywords}</a></h5>
+                    <p class="card-text">
+                        {$intro,replace_keywords}
+                    </p>
+                </div>
+            </div>
+        </div>
+        </loop>
+    </div>
+
+    <!-- 分页 -->
+
+    <nav aria-label="page navigation" class="my-4">
+        <div class="pagination justify-content-center">
+            <pagebar>{first}{prev}{page_list}{next}{last}</pagebar>
+        </div>
+    </nav>
+
+</div>
+
+<!--#include file="../common/footer.shtml"-->
